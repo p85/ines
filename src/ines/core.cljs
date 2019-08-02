@@ -13,9 +13,9 @@
   (swap! app-state assoc :searchText text))
 
 (defn preview-component []
-  (let [sText (get @app-state :searchText)]
-    (when-not (empty? sText)
-      (println (filter #(not (= nil (re-find (re-pattern (str "(?i)" (get % :name))) sText))) (get @app-state :waren))))))
+  (when-let [sText (get @app-state :searchText)] (empty? sText)
+            (when-let [preview-results (filter #(not (= nil (re-find (re-pattern (str "(?i)" (get % :name))) sText))) (get @app-state :waren))] (not ())
+                      (println preview-results))))
 
 (defn main-component []
   [:div
