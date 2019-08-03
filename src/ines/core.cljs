@@ -16,8 +16,7 @@
 
 ;; show/hide preview box
 (defn show-preview [state]
-  (swap! app-state assoc :showPreview state)
-  (println (get @app-state :showPreview)))
+  (swap! app-state assoc :showPreview state))
 
 ;; add a item
 (defn add-item-from-preview-list [item-name]
@@ -62,7 +61,10 @@
    [:h1 "ines"]
    [:h3 "was willst du kaufen?"]
    [:input {:type "text" :on-change #(text-input (-> % .-target .-value))}]
-   [:span {:class "show-all-button" :on-click #(show-preview true)} "alle Artikel anzeigen"]
+   (let [show-preview-button-state (get @app-state :showPreview)]
+     [:span {:class "show-all-button" :on-click #(show-preview (not show-preview-button-state))}
+      (if (= true show-preview-button-state) "Liste ausblenden" "alle Artikel anzeigen")]
+   )
    [:div {:class "preview"} (preview-component)]
    [:div {:class "list"} (list-component)]])
 
