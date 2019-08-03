@@ -18,12 +18,13 @@
       (when-let [preview-results (filter #(not (= nil (re-find (re-pattern (str "(?i)" sText))  (get % :name)))) (get @app-state :waren))]
         preview-results))))
 
+;; {:style {:background "red"}}
 (defn main-component []
   [:div
    [:h1 "ines"]
    [:h3 "bitte etwas eingeben"]
    [:input {:type "text" :on-change #(text-input (-> % .-target .-value))}]
-   [:div (preview-component)]])
+   [:div {:class "preview"} (preview-component)]])
 
 
 
