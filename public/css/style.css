@@ -24,3 +24,11 @@
     cursor: pointer;
     list-style-type: none;
 }
+
+.list {
+    margin-top: 25px;
+}
+
+.item {
+    cursor: pointer;
+}
