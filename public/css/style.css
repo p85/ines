@@ -32,3 +32,8 @@
 .item {
     cursor: pointer;
 }
+
+.show-all-button {
+    margin-left: 30px;
+    cursor: pointer;
+}

@@ -3,38 +3,53 @@
   (:require [reagent.core :as reagent :refer [atom]]))
 
 (defonce app-state (reagent/atom {:searchText nil
-                                  :liste []
-                                  :waren [{:name "Milch" :units "Liter"}
+                                  :showPreview false
+                                  :list []
+                                  :items [{:name "Milch" :units "Liter"}
                                           {:name "Milchiges" :units "Kg"}
                                           {:name "Brot" :units "Stück"}]}))
 
+
+;; on text entered into the text-box, update the state with the actual search value
 (defn text-input [text]
   (swap! app-state assoc :searchText text))
 
+;; show/hide preview box
+(defn show-preview [state]
+  (swap! app-state assoc :showPreview state)
+  (println (get @app-state :showPreview)))
+
 ;; add a item
 (defn add-item-from-preview-list [item-name]
-  (when-let [currentList (get @app-state :liste)]
+  (when-let [currentList (get @app-state :list)]
     (when-not (some #(= % {:name item-name}) currentList)
-      (swap! app-state assoc :liste (conj currentList {:name item-name}))
-      (println (get @app-state :liste)))))
+      (swap! app-state assoc :list (conj currentList {:name item-name})))))
 
 ;; delete a item
 (defn delete-item [item-name]
-  (when-let [currentList (get @app-state :liste)]
+  (when-let [currentList (get @app-state :list)]
     (when (some #(= % {:name item-name}) currentList)
-      (swap! app-state assoc :liste (remove #(= {:name item-name} %) currentList)))))
+      (swap! app-state assoc :list (remove #(= {:name item-name} %) currentList)))))
 
+(defn show-preview-results [items]
+  [:ul
+    (for [item items]
+      [:li {:key (:name item) :class "preview-item" :on-click #(add-item-from-preview-list (:name item))} (:name item)])])
+
+;; preview list
 (defn preview-component []
-  (when-let [sText (get @app-state :searchText)]
-    (when-not (empty? sText)
-      (when-let [preview-results (filter #(not (= nil (re-find (re-pattern (str "(?i)" sText))  (get % :name)))) (get @app-state :waren))]
-        [:ul
-         (for [item preview-results]
-           [:li {:key (:name item) :class "preview-item" :on-click #(add-item-from-preview-list (:name item))} (:name item)]
-           )]))))
+  (let [sText (get @app-state :searchText)]
+    (if (= true (get @app-state :showPreview))
+      (show-preview-results (get @app-state :items))
+      (when-not (empty? sText)
+        (let [preview-results (filter #(not (= nil (re-find (re-pattern (str "(?i)" sText)) (get % :name)))) (get @app-state :items))]
+          (show-preview-results preview-results)))
+      )))
 
+
+;; actual list
 (defn list-component []
-  (when-let [currentList (get @app-state :liste)]
+  (when-let [currentList (get @app-state :list)]
     (when-not (empty? currentList)
       [:div "Ihr Einkaufszettel:"
        [:ul
@@ -45,8 +60,9 @@
 (defn main-component []
   [:div
    [:h1 "ines"]
-   [:h3 "bitte etwas eingeben"]
+   [:h3 "was willst du kaufen?"]
    [:input {:type "text" :on-change #(text-input (-> % .-target .-value))}]
+   [:span {:class "show-all-button" :on-click #(show-preview true)} "alle Artikel anzeigen"]
    [:div {:class "preview"} (preview-component)]
    [:div {:class "list"} (list-component)]])
 
