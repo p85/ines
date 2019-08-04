@@ -25,8 +25,11 @@
 ;; add a item
 (defn add-item [item-name units amount]
   (when-let [currentList (get @app-state :list)]
-    (when-not (some #(= (:name %) item-name) currentList)
-      (swap! app-state assoc :list (conj currentList {:name item-name :units units :amount amount})))))
+    (if-not (some #(= (:name %) item-name) currentList)
+      (swap! app-state assoc :list (conj currentList {:name item-name :units units :amount (or amount 1)}))
+      (when-let [found-existing-item (first (filter #(= (:name %) item-name) currentList))]
+        (let [updated-item (assoc found-existing-item :amount (inc (:amount found-existing-item)))]
+          (swap! app-state assoc :list (map #(if (= (:name %) item-name) updated-item %) (:list @app-state))))))))
 
 ;; delete a item
 (defn delete-item [item-name]
