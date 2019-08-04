@@ -37,3 +37,14 @@
     margin-left: 30px;
     cursor: pointer;
 }
+
+.search {
+    max-width: 30vw;
+    margin-top: 40px;
+    margin-left: 20px;
+}
+
+.app-title {
+    margin-top: 20px;
+    margin-left: 20px;
+}

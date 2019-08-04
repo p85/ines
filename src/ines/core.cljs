@@ -85,13 +85,16 @@
 ;; {:style {:background "red"}}
 (defn main-component []
   [:div
-   [:h1 "ines"]
-   [:h3 "was willst du kaufen?"]
-   [:input {:type "text" :on-change #(text-input (-> % .-target .-value))}]
-   (let [show-preview-button-state (get @app-state :showPreview)]
-     [:span {:class "show-all-button" :on-click #(show-preview (not show-preview-button-state))}
-      (if (= true show-preview-button-state) "Liste ausblenden" "alle Artikel anzeigen")]
-   )
+   [:h2 {:class "app-title"} "Der (halbwegs) intelligente Einkaufszettel"]
+   [:div {:class "input-group mb-3 search"}
+    [:input {:type "text" :class "form-control" :placeholder "Was suchen sie?" :aria-label "aria-label-wtf" :aria-describedby "btn-show-all" :on-change #(text-input (-> % .-target .-value))}]
+    [:div {:class "input-group-append"}
+     (let [show-preview-button-state (get @app-state :showPreview)]
+       [:button {:class "btn btn-outline-secondary" :type "button" :id "btn-show-all" :on-click #(show-preview (not show-preview-button-state))} (if (= true show-preview-button-state) "Liste ausblenden" "alle Artikel anzeigen")]
+     )
+    ]
+   ]
+   ;; [:input {:type "text" :on-change #(text-input (-> % .-target .-value))}]
    [:div {:class "preview"} (preview-component)]
    [:div {:class "list"} (list-component)]])
 
