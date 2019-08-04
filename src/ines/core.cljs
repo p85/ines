@@ -28,7 +28,7 @@
     (if-not (some #(= (:name %) item-name) currentList)
       (swap! app-state assoc :list (conj currentList {:name item-name :units units :amount (or amount 1)}))
       (when-let [found-existing-item (first (filter #(= (:name %) item-name) currentList))]
-        (let [updated-item (assoc found-existing-item :amount (inc (:amount found-existing-item)))]
+        (let [updated-item (assoc found-existing-item :amount (+ (int (:amount found-existing-item)) (or (int amount) 1)))]
           (swap! app-state assoc :list (map #(if (= (:name %) item-name) updated-item %) (:list @app-state))))))))
 
 ;; delete a item
