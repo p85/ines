@@ -1,6 +1,6 @@
 .loader {
-  border: 16px solid #f3f3f3; /* Light grey */
-  border-top: 16px solid #3498db; /* Blue */
+  border: 16px solid #f3f3f3;
+  border-top: 16px solid #3498db;
   border-radius: 50%;
   width: 120px;
   height: 120px;
@@ -22,7 +22,8 @@
 
 .preview-item {
     cursor: pointer;
-    list-style-type: none;
+    width: 70vw;
+    margin-left: 20px;
 }
 
 .list {
@@ -30,6 +31,7 @@
 }
 
 .item {
+    max-width: 30vw;
     cursor: pointer;
 }
 
@@ -46,5 +48,17 @@
 
 .app-title {
     margin-top: 20px;
+    margin-left: 20px;
+}
+
+.amount-badge {
+    margin-right: 20px;
+    font-size: 16px;
+}
+
+.list-label {
+    font-size: 18px;
+    font-weight: bold;
+    width: 70vw;
     margin-left: 20px;
 }

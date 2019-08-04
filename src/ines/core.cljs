@@ -45,10 +45,10 @@
 
 ;; shows the preview list
 (defn show-preview-results [items]
-  [:ul
+  [:ul {:class "list-group"}
    (for [item items]
-     [:li {:key (:name item) :class "preview-item" :on-click #(add-item (:name item) (:units item) (:amount item))}
-      (get-combined-name (:name item) (:units item) (:amount item))])])
+     [:li {:key (:name item) :class "list-group-item list-group-item-action preview-item" :on-click #(add-item (:name item) (:units item) (:amount item))}
+      [:span {:class "badge badge-primary badge-pill amount-badge"} (:amount item) " " (:units item)] (:name item)])])
 
 ;; parse input
 (defn input-parser [sText]
@@ -72,15 +72,17 @@
 ;; * FOR THE SELECTED ITEMS LIST *
 ;; *******************************
 
+
 ;; actual list
 (defn list-component []
   (when-let [currentList (get @app-state :list)]
     (when-not (empty? currentList)
-      [:div "Ihr Einkaufszettel:"
-       [:ul
+      [:div {:class "alert alert-info list-label"} "Ihr Einkaufszettel:"[:br][:br]
+       [:ul {:class "list-group"}
         (for [item currentList]
-          [:li {:key (:name item) :class "item" :on-click #(delete-item (:name item))}
-           (get-combined-name (:name item) (:units item) (:amount item))])]])))
+          [:li {:key (:name item) :class "list-group-item list-group-item-action item" :on-click #(delete-item (:name item))}
+           [:span {:class "badge badge-primary badge-pill amount-badge"} (:amount item) " " (:units item)]
+           (:name item)])]])))
 
 ;; {:style {:background "red"}}
 (defn main-component []
