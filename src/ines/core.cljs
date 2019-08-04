@@ -61,7 +61,7 @@
 ;; preview list component
 (defn preview-component []
   (let [sText (get @app-state :searchText)]
-    (if (= true (get @app-state :showPreview))
+    (if (and (= true (get @app-state :showPreview) (empty? sText)))
       (show-preview-results (get @app-state :items))
       (when-not (empty? sText)
         (let [preview-results (input-parser sText)]
