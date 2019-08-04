@@ -25,14 +25,14 @@
 ;; add a item
 (defn add-item [item-name units amount]
   (when-let [currentList (get @app-state :list)]
-    (when-not (some #(= % {:name item-name}) currentList)
+    (when-not (some #(= (:name %) item-name) currentList)
       (swap! app-state assoc :list (conj currentList {:name item-name :units units :amount amount})))))
 
 ;; delete a item
 (defn delete-item [item-name]
   (when-let [currentList (get @app-state :list)]
-    (when (some #(= % {:name item-name}) currentList)
-      (swap! app-state assoc :list (remove #(= {:name item-name} %) currentList)))))
+    (when (some #(= (:name %) item-name) currentList)
+      (swap! app-state assoc :list (remove #(= (:name %) item-name) currentList)))))
 
 ;; get combined name of item
 (defn get-combined-name [item-name units amount]
@@ -76,7 +76,8 @@
       [:div "Ihr Einkaufszettel:"
        [:ul
         (for [item currentList]
-          [:li {:key (:name item) :class "item" :on-click #(delete-item (:name item))} (:name item)])]])))
+          [:li {:key (:name item) :class "item" :on-click #(delete-item (:name item))}
+           (get-combined-name (:name item) (:units item) (:amount item))])]])))
 
 ;; {:style {:background "red"}}
 (defn main-component []
