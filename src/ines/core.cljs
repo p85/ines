@@ -35,16 +35,19 @@
     (for [item items]
       [:li {:key (:name item) :class "preview-item" :on-click #(add-item-from-preview-list (:name item))} (:name item)])])
 
+;; parse input
+(defn input-parser [sText]
+  (filter #(not (= nil (re-find (re-pattern (str "(?i)" sText)) (get % :name)))) (get @app-state :items))
+  )
+
 ;; preview list
 (defn preview-component []
   (let [sText (get @app-state :searchText)]
     (if (= true (get @app-state :showPreview))
       (show-preview-results (get @app-state :items))
       (when-not (empty? sText)
-        (let [preview-results (filter #(not (= nil (re-find (re-pattern (str "(?i)" sText)) (get % :name)))) (get @app-state :items))]
-          (show-preview-results preview-results)))
-      )))
-
+        (let [preview-results (input-parser sText)]
+          (show-preview-results preview-results))))))
 
 ;; actual list
 (defn list-component []
@@ -67,8 +70,6 @@
    )
    [:div {:class "preview"} (preview-component)]
    [:div {:class "list"} (list-component)]])
-
-
 
 
 (defn start []
