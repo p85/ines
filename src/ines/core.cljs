@@ -19,7 +19,7 @@
   (swap! app-state assoc :showPreview state))
 
 ;; add a item
-(defn add-item-from-preview-list [item-name]
+(defn add-item [item-name]
   (when-let [currentList (get @app-state :list)]
     (when-not (some #(= % {:name item-name}) currentList)
       (swap! app-state assoc :list (conj currentList {:name item-name})))))
@@ -30,10 +30,11 @@
     (when (some #(= % {:name item-name}) currentList)
       (swap! app-state assoc :list (remove #(= {:name item-name} %) currentList)))))
 
+;; shows the preview list
 (defn show-preview-results [items]
   [:ul
     (for [item items]
-      [:li {:key (:name item) :class "preview-item" :on-click #(add-item-from-preview-list (:name item))} (:name item)])])
+      [:li {:key (:name item) :class "preview-item" :on-click #(add-item (:name item))} (:name item)])])
 
 ;; parse input
 (defn input-parser [sText]
