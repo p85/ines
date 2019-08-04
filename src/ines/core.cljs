@@ -45,10 +45,11 @@
 
 ;; shows the preview list
 (defn show-preview-results [items]
+  [:div {:class "alert alert-success"}
   [:ul {:class "list-group"}
    (for [item items]
      [:li {:key (:name item) :class "list-group-item list-group-item-action preview-item" :on-click #(add-item (:name item) (:units item) (:amount item))}
-      [:span {:class "badge badge-primary badge-pill amount-badge"} (:amount item) " " (:units item)] (:name item)])])
+      [:span {:class "badge badge-primary badge-pill amount-badge"} (:amount item) " " (:units item)] (:name item)])]])
 
 ;; parse input
 (defn input-parser [sText]
