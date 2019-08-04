@@ -37,8 +37,9 @@
 
 ;; parse input
 (defn input-parser [sText]
-  (filter #(not (= nil (re-find (re-pattern (str "(?i)" sText)) (get % :name)))) (get @app-state :items))
-  )
+  (let [s clojure.string]
+    (filter #(s.includes? (s.lower-case (:name %)) (s.lower-case sText)) (get @app-state :items))
+  ))
 
 ;; preview list
 (defn preview-component []
