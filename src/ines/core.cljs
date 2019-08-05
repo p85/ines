@@ -10,20 +10,20 @@
                                           {:name "Brot" :units "Stück"}]}))
 
 
-;; on text entered into the text-box, update the state with the actual search value
 (defn text-input [text]
+  "on text entered into the text-box, update the state with the actual search value"
   (swap! app-state assoc :searchText text))
 
 ;; ***********************
 ;; * FOR THE PREVIEW BOX *
 ;; ***********************
 
-;; show/hide preview box
 (defn show-preview [state]
+  "show/hide preview box"
   (swap! app-state assoc :showPreview state))
 
-;; add a item
 (defn add-item [item-name units amount]
+  "adds a item to the list. if the item exists, increase the amount by 1 or the specified value in the textbox"
   (when-let [currentList (get @app-state :list)]
     (if-not (some #(= (:name %) item-name) currentList)
       (swap! app-state assoc :list (conj currentList {:name item-name :units units :amount (or amount 1)}))
@@ -31,36 +31,30 @@
         (let [updated-item (assoc found-existing-item :amount (+ (int (:amount found-existing-item)) (if (= amount nil) 1 (int amount))))]
           (swap! app-state assoc :list (map #(if (= (:name %) item-name) updated-item %) (:list @app-state))))))))
 
-;; delete a item
 (defn delete-item [item-name]
+  "deletes a item from the list"
   (when-let [currentList (get @app-state :list)]
     (when (some #(= (:name %) item-name) currentList)
       (swap! app-state assoc :list (remove #(= (:name %) item-name) currentList)))))
 
-;; get combined name of item
-(defn get-combined-name [item-name units amount]
-  (if amount
-    (str amount " " units " " item-name)
-    (str item-name)))
-
-;; shows the preview list
 (defn show-preview-results [items]
+  "returns the preview list"
   [:div {:class "alert alert-success"}
   [:ul {:class "list-group"}
    (for [item items]
      [:li {:key (:name item) :class "list-group-item list-group-item-action preview-item" :on-click #(add-item (:name item) (:units item) (:amount item))}
       [:span {:class "badge badge-primary badge-pill amount-badge"} (:amount item) " " (:units item)] (:name item)])]])
 
-;; parse input
 (defn input-parser [sText]
+  "parses the searchValue and returns a vector of found items"
   (let [s clojure.string amount (re-find #"^ *\d+" sText) sText (s.trim (s.replace sText #"^ *\d+" ""))]
     (when-let [foundItems (filter #(s.includes? (s.lower-case (:name %)) (s.lower-case sText)) (get @app-state :items))]
       (map #(assoc % :amount amount) foundItems)
     )
   ))
 
-;; preview list component
 (defn preview-component []
+  "preview list component"
   (let [sText (get @app-state :searchText)]
     (if (and (= true (get @app-state :showPreview) (empty? sText)))
       (show-preview-results (get @app-state :items))
@@ -68,24 +62,23 @@
         (let [preview-results (input-parser sText)]
           (show-preview-results preview-results))))))
 
-
 ;; *******************************
 ;; * FOR THE SELECTED ITEMS LIST *
 ;; *******************************
 
-
-;; actual list
 (defn list-component []
+  "list component"
   (when-let [currentList (get @app-state :list)]
     (when-not (empty? currentList)
       [:div {:class "alert alert-info list-label"} "Ihr Einkaufszettel:"[:br][:br]
        [:ul {:class "list-group"}
         (for [item currentList]
-          [:li {:key (:name item) :class "list-group-item list-group-item-action item" :on-click #(delete-item (:name item))}
+          [:li {:key (:name item) :class "list-group-item list-group-item-action item"}
            [:span {:class "badge badge-primary badge-pill amount-badge"} (:amount item) " " (:units item)]
-           (:name item)])]])))
+           (:name item)
+           [:img {:src "/img/trash.svg" :class "delete-item-button" :on-click #(delete-item (:name item))}]
+           ])]])))
 
-;; {:style {:background "red"}}
 (defn main-component []
   [:div
    [:h2 {:class "app-title"} "Der (halbwegs) intelligente Einkaufszettel"]

@@ -33,7 +33,6 @@
 
 .item {
     max-width: 30vw;
-    cursor: pointer;
 }
 
 .show-all-button {
@@ -62,4 +61,10 @@
     font-weight: bold;
     width: 40vw;
     margin-left: 20px;
+}
+
+.delete-item-button {
+  right: 1vw;
+  position: absolute;
+  cursor: pointer;
 }
