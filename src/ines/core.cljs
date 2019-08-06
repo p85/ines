@@ -22,6 +22,12 @@
   "show/hide preview box"
   (swap! app-state assoc :showPreview state))
 
+(defn delete-item [item-name]
+"deletes a item from the list"
+(when-let [currentList (get @app-state :list)]
+  (when (some #(= (:name %) item-name) currentList)
+    (swap! app-state assoc :list (remove #(= (:name %) item-name) currentList)))))
+
 (defn add-item [item-name units amount]
   "adds a item to the list. if the item exists, increase the amount by 1 or the specified value in the textbox"
   (when-let [currentList (get @app-state :list)]
@@ -29,13 +35,9 @@
       (swap! app-state assoc :list (conj currentList {:name item-name :units units :amount (or amount 1)}))
       (when-let [found-existing-item (first (filter #(= (:name %) item-name) currentList))]
         (let [updated-item (assoc found-existing-item :amount (+ (int (:amount found-existing-item)) (if (= amount nil) 1 (int amount))))]
-          (swap! app-state assoc :list (map #(if (= (:name %) item-name) updated-item %) (:list @app-state))))))))
-
-(defn delete-item [item-name]
-  "deletes a item from the list"
-  (when-let [currentList (get @app-state :list)]
-    (when (some #(= (:name %) item-name) currentList)
-      (swap! app-state assoc :list (remove #(= (:name %) item-name) currentList)))))
+          (if (= (:amount updated-item) 0)
+            (delete-item item-name)
+            (swap! app-state assoc :list (map #(if (= (:name %) item-name) updated-item %) (:list @app-state)))))))))
 
 (defn show-preview-results [items]
   "returns the preview list"
@@ -80,6 +82,8 @@
           [:li {:key (:name item) :class "list-group-item list-group-item-action item"}
            [:span {:class "badge badge-primary badge-pill amount-badge"} (:amount item) " " (:units item)]
            (:name item)
+           [:img {:src "/img/plus.svg" :class "add-item-button" :on-click #(add-item (:name item) (:units item) 1)}]
+           [:img {:src "/img/minus.svg" :class "minus-item-button" :on-click #(add-item (:name item) (:units item) -1)}]
            [:img {:src "/img/trash.svg" :class "delete-item-button" :on-click #(delete-item (:name item))}]])]])))
 
 (defn main-component []

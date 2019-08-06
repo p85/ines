@@ -68,6 +68,16 @@
   position: absolute;
   cursor: pointer;
 }
+.add-item-button {
+  right: 6vw;
+  position: absolute;
+  cursor: pointer;
+}
+.minus-item-button {
+  right: 11vw;
+  position: absolute;
+  cursor: pointer;
+}
 
 .alert-text {
   font-size: 18px;
