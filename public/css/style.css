@@ -68,3 +68,11 @@
   position: absolute;
   cursor: pointer;
 }
+
+.alert-text {
+  font-size: 18px;
+  font-weight: bold;
+}
+.alert-symbol {
+  margin-right: 15px;
+}

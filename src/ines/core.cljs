@@ -40,18 +40,20 @@
 (defn show-preview-results [items]
   "returns the preview list"
   [:div {:class "alert alert-success"}
-  [:ul {:class "list-group"}
-   (for [item items]
-     [:li {:key (:name item) :class "list-group-item list-group-item-action preview-item" :on-click #(add-item (:name item) (:units item) (:amount item))}
-      [:span {:class "badge badge-primary badge-pill amount-badge"} (:amount item) " " (:units item)] (:name item)])]])
+   [:ul {:class "list-group"}
+    (for [item items]
+      [:li {:key (:name item) :class "list-group-item list-group-item-action preview-item" :on-click #(add-item (:name item) (:units item) (:amount item))}
+       [:span {:class "badge badge-primary badge-pill amount-badge"} (:amount item) " " (:units item)] (:name item)])]])
 
 (defn input-parser [sText]
   "parses the searchValue and returns a vector of found items"
   (let [s clojure.string amount (re-find #"^ *\d+" sText) sText (s.trim (s.replace sText #"^ *\d+" ""))]
     (when-let [foundItems (filter #(s.includes? (s.lower-case (:name %)) (s.lower-case sText)) (get @app-state :items))]
-      (map #(assoc % :amount amount) foundItems)
-    )
-  ))
+      (map #(assoc % :amount amount) foundItems))))
+
+(defn preview-not-found-component []
+  "preview list empty component"
+  [:div {:class "alert alert-danger alert-text"} [:img {:src "/img/alert.svg" :class "alert-symbol"}] "nichts gefunden :("])
 
 (defn preview-component []
   "preview list component"
@@ -60,7 +62,9 @@
       (show-preview-results (get @app-state :items))
       (when-not (empty? sText)
         (let [preview-results (input-parser sText)]
-          (show-preview-results preview-results))))))
+          (if-not (empty? preview-results)
+            (show-preview-results preview-results)
+            (preview-not-found-component)))))))
 
 ;; *******************************
 ;; * FOR THE SELECTED ITEMS LIST *
@@ -70,14 +74,13 @@
   "list component"
   (when-let [currentList (get @app-state :list)]
     (when-not (empty? currentList)
-      [:div {:class "alert alert-info list-label"} "Ihr Einkaufszettel:"[:br][:br]
+      [:div {:class "alert alert-info list-label"} "Ihr Einkaufszettel:" [:br] [:br]
        [:ul {:class "list-group"}
         (for [item currentList]
           [:li {:key (:name item) :class "list-group-item list-group-item-action item"}
            [:span {:class "badge badge-primary badge-pill amount-badge"} (:amount item) " " (:units item)]
            (:name item)
-           [:img {:src "/img/trash.svg" :class "delete-item-button" :on-click #(delete-item (:name item))}]
-           ])]])))
+           [:img {:src "/img/trash.svg" :class "delete-item-button" :on-click #(delete-item (:name item))}]])]])))
 
 (defn main-component []
   [:div
@@ -86,11 +89,7 @@
     [:input {:type "text" :class "form-control" :placeholder "Was suchen sie?" :aria-label "aria-label-wtf" :aria-describedby "btn-show-all" :on-change #(text-input (-> % .-target .-value))}]
     [:div {:class "input-group-append"}
      (let [show-preview-button-state (get @app-state :showPreview)]
-       [:button {:class "btn btn-outline-secondary" :type "button" :id "btn-show-all" :on-click #(show-preview (not show-preview-button-state))} (if (= true show-preview-button-state) "Liste ausblenden" "alle Artikel anzeigen")]
-     )
-    ]
-   ]
-   ;; [:input {:type "text" :on-change #(text-input (-> % .-target .-value))}]
+       [:button {:class "btn btn-outline-secondary" :type "button" :id "btn-show-all" :on-click #(show-preview (not show-preview-button-state))} (if (= true show-preview-button-state) "Liste ausblenden" "alle Artikel anzeigen")])]]
    [:div {:class "preview"} (preview-component)]
    [:div {:class "list"} (list-component)]])
 
