@@ -5,9 +5,12 @@
 (defonce app-state (reagent/atom {:searchText nil
                                   :showPreview false
                                   :list []
-                                  :items [{:name "Milch" :units "Liter"}
-                                          {:name "Milchiges" :units "Kg"}
-                                          {:name "Brot" :units "Stück"}]}))
+                                  ; :items [{:name "Milch" :units "Liter"}
+                                  ;         {:name "Milchiges" :units "Kg"}
+                                  ;         {:name "Brot" :units "Stück"}]
+                                  :items [{:name ["Milch" "iges"] :units "Liter"}
+                                          {:name ["Milchiges" "ges"] :units "Kg"}
+                                          {:name ["Brot" "rot"] :units "Stück"}]}))
 
 
 (defn text-input [text]
@@ -23,17 +26,17 @@
   (swap! app-state assoc :showPreview state))
 
 (defn delete-item [item-name]
-"deletes a item from the list"
-(when-let [currentList (get @app-state :list)]
-  (when (some #(= (:name %) item-name) currentList)
-    (swap! app-state assoc :list (remove #(= (:name %) item-name) currentList)))))
+  "deletes a item from the list"
+  (when-let [currentList (get @app-state :list)]
+    (when (some #(= (:name %) item-name) currentList)
+      (swap! app-state assoc :list (remove #(= (:name %) item-name) currentList)))))
 
 (defn add-item [item-name units amount]
   "adds a item to the list. if the item exists, increase the amount by 1 or the specified value in the textbox"
   (when-let [currentList (get @app-state :list)]
     (if-not (some #(= (:name %) item-name) currentList)
       (swap! app-state assoc :list (conj currentList {:name item-name :units units :amount (or amount 1)}))
-      (when-let [found-existing-item (first (filter #(= (:name %) item-name) currentList))]
+      (when-let [found-existing-item (filter #(= (:name %) item-name) currentList)]
         (let [updated-item (assoc found-existing-item :amount (+ (int (:amount found-existing-item)) (if (= amount nil) 1 (int amount))))]
           (if (= (:amount updated-item) 0)
             (delete-item item-name)
@@ -49,9 +52,17 @@
 
 (defn input-parser [sText]
   "parses the searchValue and returns a vector of found items"
-  (let [s clojure.string amount (re-find #"^ *\d+" sText) sText (s.trim (s.replace sText #"^ *\d+" ""))]
-    (when-let [foundItems (filter #(s.includes? (s.lower-case (:name %)) (s.lower-case sText)) (get @app-state :items))]
-      (map #(assoc % :amount amount) foundItems))))
+  (let [s clojure.string amount (re-find #"^ *\d+" sText) sText (s.trim (s.replace sText #"^ *\d+" "")) result []]
+    ; (println sText)
+    ; (when-let [foundItems (filter #(s.includes? (s.lower-case (:name %)) (s.lower-case sText)) (get @app-state :items))]
+      ; (map #(assoc % :amount amount) foundItems))
+    (when-let [allItems (get @app-state :items)]
+        ; (when-let [foundThis (filter #(s.includes? (s.lower-case %) (s.lower-case sText)) i)]
+      (into [] (remove #(nil? %) (flatten
+      (for [i allItems]
+        (for [ii (:name i)]
+          (when (s.includes? (s.lower-case ii) (s.lower-case sText))
+            (conj result {:name ii}))))))))))
 
 (defn preview-not-found-component []
   "preview list empty component"
