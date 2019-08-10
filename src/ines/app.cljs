@@ -1,5 +1,5 @@
 
-(ns ines.core
+(ns ines.app
   (:require [reagent.core :as reagent :refer [atom]])
   (:require [ines.item-list :as item-list]))
 

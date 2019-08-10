@@ -8,22 +8,23 @@
  ;; set an nrepl port for connection to a REPL.
  :nrepl        {:port 8777}
 
- :builds
- {:app {:target :browser
-        :output-dir "public/js/compiled"
-        :asset-path "/js/compiled"
+ :builds {:test {:target :node-test
+                 :output-to "out-test/node-tests.js"
+                 :autorun false}
+          :app {:target :browser
+                :output-dir "public/js/compiled"
+                :asset-path "/js/compiled"
 
-        :modules
-        {:main
-         {:entries [ines.core]}}
+                :modules
+                {:main
+                 {:entries [ines.app]}}
 
-        :devtools
+                :devtools
         ;; before live-reloading any code call this function
-        {:before-load ines.core/stop
+                {:before-load ines.app/stop
          ;; after live-reloading finishes call this function
-         :after-load ines.core/start
+                 :after-load ines.app/start
          ;; serve the public directory over http at port 8700
-         :http-root    "public"
-         :http-port    8700
-         :preloads     [devtools.preload]}
-        }}}
+                 :http-root    "public"
+                 :http-port    8700
+                 :preloads     [devtools.preload]}}}}
