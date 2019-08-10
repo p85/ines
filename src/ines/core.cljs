@@ -32,8 +32,7 @@
         total-pages (:total-pages pagination-config)]
     (if (= current-page total-pages)
       (subvec (into [] all-items) (- (* current-page page-size) page-size))
-      (subvec (into [] all-items) (- (* current-page page-size) page-size) (* current-page page-size)))
-    ))
+      (subvec (into [] all-items) (- (* current-page page-size) page-size) (* current-page page-size)))))
 
 (defn pagination-component []
   (let [pagination-config (get @app-state :preview-pagination)
@@ -42,7 +41,9 @@
         total-pages (:total-pages pagination-config)]
     (for [page (range 1 (inc total-pages))]
       [:div {:class "pagination-page-element" :key page}
-       [:div {:class "pagination-page-element-button" :on-click #(go-to-page page)} page]])))
+       (if (= page current-page)
+         [:div {:class "pagination-page-element-button-active" :on-click #(go-to-page page)} page]
+         [:div {:class "pagination-page-element-button-inactive" :on-click #(go-to-page page)} page])])))
 
 ;; ***********************
 ;; * FOR THE PREVIEW BOX *
