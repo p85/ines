@@ -13,9 +13,11 @@
 ;; **************
 
 (defn calculate-max-pages [all-items]
+  "calculates the total-pages for the preview-list"
   (Math/ceil (/ (count (into [] all-items)) (:page-size (get @app-state :preview-pagination)))))
 
 (defn go-to-page [page]
+  "changes the actual preview list page"
   (swap! app-state assoc-in [:preview-pagination :current-page] page))
 
 (defn get-preview-items [all-items]
@@ -29,6 +31,7 @@
       (subvec (into [] all-items) (- (* current-page page-size) page-size) (* current-page page-size)))))
 
 (defn pagination-component []
+  "pagination component, for navigating between preview-list items"
   (let [pagination-config (get @app-state :preview-pagination)
         current-page (:current-page pagination-config)
         page-size (:page-size pagination-config)
