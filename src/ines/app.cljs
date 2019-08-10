@@ -8,12 +8,6 @@
                                   :preview-pagination {:current-page 1 :page-size 2 :total-pages 0}
                                   :list []
                                   :items item-list/item-list}))
-
-
-(defn text-input [text]
-  "on text entered into the text-box, update the state with the actual search value"
-  (swap! app-state assoc :searchText text))
-
 ;; **************
 ;; * PAGINATION *
 ;; **************
@@ -48,6 +42,11 @@
 ;; ***********************
 ;; * FOR THE PREVIEW BOX *
 ;; ***********************
+
+(defn text-input [text]
+  "on text entered into the text-box, update the state with the actual search value"
+  (go-to-page 1)
+  (swap! app-state assoc :searchText text))
 
 (defn show-preview [state]
   "show/hide preview box"
