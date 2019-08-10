@@ -1,16 +1,13 @@
 
 (ns ines.core
-  (:require [reagent.core :as reagent :refer [atom]]))
+  (:require [reagent.core :as reagent :refer [atom]])
+  (:require [ines.item-list :as item-list]))
 
 (defonce app-state (reagent/atom {:searchText nil
                                   :showPreview false
                                   :list []
-                                  ; :items [{:name "Milch" :units "Liter"}
-                                  ;         {:name "Milchiges" :units "Kg"}
-                                  ;         {:name "Brot" :units "Stück"}]
-                                  :items [{:name ["Milch" "iges"] :units "Liter"}
-                                          {:name ["Milchiges" "ges"] :units "Kg"}
-                                          {:name ["Brot" "rot"] :units "Stück"}]}))
+                                  :items item-list/item-list
+                                  }))
 
 
 (defn text-input [text]
