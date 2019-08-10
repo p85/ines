@@ -30,7 +30,10 @@
         current-page (:current-page pagination-config)
         page-size (:page-size pagination-config)
         total-pages (:total-pages pagination-config)]
-    (subvec (into [] all-items) (- (* current-page page-size) page-size) (* current-page page-size))))
+    (if (= current-page total-pages)
+      (subvec (into [] all-items) (- (* current-page page-size) page-size))
+      (subvec (into [] all-items) (- (* current-page page-size) page-size) (* current-page page-size)))
+    ))
 
 (defn pagination-component []
   (let [pagination-config (get @app-state :preview-pagination)
