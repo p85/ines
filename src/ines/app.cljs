@@ -84,7 +84,7 @@
 
 (defn input-parser [sText]
   "parses the searchValue and returns a vector of found items"
-  (let [s clojure.string amount (re-find #"^ *\d+" sText) sText (s.trim (s.replace sText #"^ *\d+" "")) result []]
+  (let [s clojure.string amount (if (= 0 (int (re-find #"^ *\d+" sText))) 1 (int (re-find #"^ *\d+" sText))) sText (s.trim (s.replace sText #"^ *\d+" "")) result []]
     (when-let [allItems (get @app-state :items)]
       (into []
             (remove #(nil? %)
