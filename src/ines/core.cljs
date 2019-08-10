@@ -36,7 +36,7 @@
   (when-let [currentList (get @app-state :list)]
     (if-not (some #(= (:name %) item-name) currentList)
       (swap! app-state assoc :list (conj currentList {:name item-name :units units :amount (or amount 1)}))
-      (when-let [found-existing-item (filter #(= (:name %) item-name) currentList)]
+      (when-let [found-existing-item (into {} (filter #(= (:name %) item-name) currentList))]
         (let [updated-item (assoc found-existing-item :amount (+ (int (:amount found-existing-item)) (if (= amount nil) 1 (int amount))))]
           (if (= (:amount updated-item) 0)
             (delete-item item-name)
@@ -53,16 +53,14 @@
 (defn input-parser [sText]
   "parses the searchValue and returns a vector of found items"
   (let [s clojure.string amount (re-find #"^ *\d+" sText) sText (s.trim (s.replace sText #"^ *\d+" "")) result []]
-    ; (println sText)
-    ; (when-let [foundItems (filter #(s.includes? (s.lower-case (:name %)) (s.lower-case sText)) (get @app-state :items))]
-      ; (map #(assoc % :amount amount) foundItems))
     (when-let [allItems (get @app-state :items)]
-        ; (when-let [foundThis (filter #(s.includes? (s.lower-case %) (s.lower-case sText)) i)]
-      (into [] (remove #(nil? %) (flatten
-      (for [i allItems]
-        (for [ii (:name i)]
-          (when (s.includes? (s.lower-case ii) (s.lower-case sText))
-            (conj result {:name ii}))))))))))
+      (into []
+            (remove #(nil? %)
+                    (flatten
+                     (for [i allItems]
+                       (for [ii (:name i)]
+                         (when (s.includes? (s.lower-case ii) (s.lower-case sText))
+                           (conj result {:name ii :amount (or amount 1) :units (:units i)}))))))))))
 
 (defn preview-not-found-component []
   "preview list empty component"
