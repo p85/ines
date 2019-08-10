@@ -5,14 +5,41 @@
 
 (defonce app-state (reagent/atom {:searchText nil
                                   :showPreview false
+                                  :preview-pagination {:current-page 1 :page-size 2 :total-pages 0}
                                   :list []
-                                  :items item-list/item-list
-                                  }))
+                                  :items item-list/item-list}))
 
 
 (defn text-input [text]
   "on text entered into the text-box, update the state with the actual search value"
   (swap! app-state assoc :searchText text))
+
+;; **************
+;; * PAGINATION *
+;; **************
+
+(defn calculate-max-pages [all-items]
+  (Math/ceil (/ (count (into [] all-items)) (:page-size (get @app-state :preview-pagination)))))
+
+(defn go-to-page [page]
+  (swap! app-state assoc-in [:preview-pagination :current-page] page))
+
+(defn get-preview-items [all-items]
+  "gets the preview items, respecting the pagination configuration"
+  (let [pagination-config (get @app-state :preview-pagination)
+        current-page (:current-page pagination-config)
+        page-size (:page-size pagination-config)
+        total-pages (:total-pages pagination-config)]
+    (subvec (into [] all-items) (- (* current-page page-size) page-size) (* current-page page-size))))
+
+(defn pagination-component []
+  (let [pagination-config (get @app-state :preview-pagination)
+        current-page (:current-page pagination-config)
+        page-size (:page-size pagination-config)
+        total-pages (:total-pages pagination-config)]
+    (for [page (range 1 (inc total-pages))]
+      [:div {:class "pagination-page-element" :key page}
+       [:div {:class "pagination-page-element-button" :on-click #(go-to-page page)} page]])))
 
 ;; ***********************
 ;; * FOR THE PREVIEW BOX *
@@ -29,7 +56,7 @@
       (swap! app-state assoc :list (remove #(= (:name %) item-name) currentList)))))
 
 (defn add-item [item-name units amount]
-  "adds a item to the list. if the item exists, increase the amount by 1 or the specified value in the textbox"
+  "adds a item to the list. if the item exists, increase the amount by 1 or the specified value in the textbox (passed in as amount)"
   (when-let [currentList (get @app-state :list)]
     (if-not (some #(= (:name %) item-name) currentList)
       (swap! app-state assoc :list (conj currentList {:name item-name :units units :amount (or amount 1)}))
@@ -41,11 +68,13 @@
 
 (defn show-preview-results [items]
   "returns the preview list"
+  (swap! app-state assoc-in [:preview-pagination :total-pages] (calculate-max-pages items))
   [:div {:class "alert alert-success"}
    [:ul {:class "list-group"}
-    (for [item items]
+    (for [item (get-preview-items items)]
       [:li {:key (:name item) :class "list-group-item list-group-item-action preview-item" :on-click #(add-item (:name item) (:units item) (:amount item))}
-       [:span {:class "badge badge-primary badge-pill amount-badge"} (:amount item) " " (:units item)] (:name item)])]])
+       [:span {:class "badge badge-primary badge-pill amount-badge"} (:amount item) " " (:units item)] (:name item)])
+    [:div {:class "pagination"} (pagination-component)]]])
 
 (defn input-parser [sText]
   "parses the searchValue and returns a vector of found items"

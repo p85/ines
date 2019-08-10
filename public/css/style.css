@@ -86,3 +86,18 @@
 .alert-symbol {
   margin-right: 15px;
 }
+
+.pagination {
+  margin-top: 10px;
+  margin-left: 10%;
+}
+
+.pagination-page-element {
+  width: 40%;
+  text-align: center;
+}
+
+.pagination-page-element-button {
+  width: 15px;
+  cursor: pointer;
+}

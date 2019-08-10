@@ -1,5 +1,8 @@
 (ns ines.item-list)
 
-(def item-list [{:name ["Milch" "iges"] :units "Liter"}
-                {:name ["Milchiges" "ges"] :units "Kg"}
-                {:name ["Brot" "rot"] :units "Stück"}])
+(def item-list [{:name ["Milch"] :units "Liter"}
+                {:name ["Jogurt" "Danone"] :units "Kg"}
+                {:name ["Brot" "Bread" "Vollkorn"] :units "Stück"}
+                {:name ["Reis" "Rice" "Uncle" "Bens"] :units "Beutel"}
+                {:name ["Schokolade" "Milka" "Alpia"] :units "Stück"}
+                ])
