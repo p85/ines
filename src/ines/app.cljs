@@ -131,10 +131,10 @@
   [:div
    [:h2 {:class "app-title"} "Der (halbwegs) intelligente Einkaufszettel"]
    [:div {:class "input-group mb-3 search"}
-    [:input {:type "text" :class "form-control" :placeholder "Was suchen sie?" :aria-label "aria-label-wtf" :aria-describedby "btn-show-all" :on-change #(text-input (-> % .-target .-value))}]
+    [:input {:type "text" :class "form-control search-input-box" :placeholder "Was suchen sie?" :aria-label "aria-label-wtf" :aria-describedby "btn-show-all" :on-change #(text-input (-> % .-target .-value))}]
     [:div {:class "input-group-append"}
      (let [show-preview-button-state (get @app-state :showPreview)]
-       [:button {:class "btn btn-outline-secondary" :type "button" :id "btn-show-all" :on-click #(show-preview (not show-preview-button-state))} (if (= true show-preview-button-state) "Liste ausblenden" "alle Artikel anzeigen")])]]
+       [:button {:class "btn btn-outline-secondary btn-show-all" :type "button" :id "btn-show-all" :on-click #(show-preview (not show-preview-button-state))} (if (= true show-preview-button-state) "Liste ausblenden" "alle Artikel anzeigen")])]]
    [:div {:class "preview"} (preview-component)]
    [:div {:class "list"} (list-component)]])
 

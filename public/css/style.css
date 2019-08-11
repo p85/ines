@@ -20,19 +20,23 @@
     margin-top: 15px;
     margin-left: 20px;
     width: 40vw;
+    min-width: 350px;
 }
 
 .preview-item {
     cursor: pointer;
     max-width: 30vw;
+    min-width: 250px;
 }
 
 .list {
     margin-top: 25px;
+    min-width: 300px;
 }
 
 .item {
     max-width: 30vw;
+    min-width: 300px;
 }
 
 .show-all-button {
@@ -60,21 +64,22 @@
     font-size: 18px;
     font-weight: bold;
     width: 40vw;
+    min-width: 350px;
     margin-left: 20px;
 }
 
 .delete-item-button {
-  right: 1vw;
+  right: 5px;
   position: absolute;
   cursor: pointer;
 }
 .add-item-button {
-  right: 6vw;
+  right: 40px;
   position: absolute;
   cursor: pointer;
 }
 .minus-item-button {
-  right: 11vw;
+  right: 85px;
   position: absolute;
   cursor: pointer;
 }
@@ -109,4 +114,11 @@
   font-weight: bolder;
   font-size: 18px;
   color: red;
+}
+
+.btn-show-all {
+  min-width: 150px;
+}
+.search-input-box {
+  min-width: 150px;
 }
