@@ -31,7 +31,9 @@ On Windows:
      yarn test-windows
 
 ## Build
-(**This is optional**, it will build the HTML Files and compile the Program into JavaScript. **This is not needed** when you use `yarn server` or `yarn watch`)
+(**This is optional**, it will build the HTML Files and compile the Program into JavaScript. 
+
+**This is not needed** when you use `yarn server` or `yarn watch`)
 
     yarn release
 ## Start
