@@ -2,6 +2,13 @@
   (:require [cljs.test :refer (deftest is)])
   (:require [ines.app :as app]))
 
+;; populate the state with example items
+(swap! app/app-state assoc :items [{:name ["Milch"] :units "Liter"}
+                                   {:name ["Jogurt" "Danone"] :units "Kg"}
+                                   {:name ["Brot" "Bread" "Vollkorn"] :units "Stück"}
+                                   {:name ["Reis" "Rice" "Uncle" "Bens"] :units "Beutel"}
+                                   {:name ["Schokolade" "Milka" "Alpia"] :units "Stück"}])
+
 (deftest test-the-initial-app-state
   (let [as @app/app-state]
     (is (contains? as :searchText))
@@ -58,11 +65,6 @@
   (is (= '() (get @app/app-state :list))))
 
 (deftest test-method-input-parser
-  (swap! app/app-state assoc :items [{:name ["Milch"] :units "Liter"}
-                                     {:name ["Jogurt" "Danone"] :units "Kg"}
-                                     {:name ["Brot" "Bread" "Vollkorn"] :units "Stück"}
-                                     {:name ["Reis" "Rice" "Uncle" "Bens"] :units "Beutel"}
-                                     {:name ["Schokolade" "Milka" "Alpia"] :units "Stück"}])
   (is (= [{:name "Milch", :amount 1, :units "Liter"}] (app/input-parser "Milch"))) ;; find a exact match
   (is (= [{:name "Milch", :amount 1, :units "Liter"} {:name "Milka", :amount 1, :units "Stück"}] (app/input-parser "M"))) ;; find a appropiate match
   (is (= [] (app/input-parser "this_should_not_match"))) ;; should find no match
