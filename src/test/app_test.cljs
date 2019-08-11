@@ -16,11 +16,11 @@
     ))
 
 (deftest test-method-calculate-max-pages
-  (is (= 3 (app/calculate-max-pages [1 2 3 4 5 6])))
-  (is (= 3 (app/calculate-max-pages [1 2 3 4 5])))
-  (is (= 2 (app/calculate-max-pages [1 2 3])))
-  (is (= 1 (app/calculate-max-pages [1 2])))
-  (is (= 1 (app/calculate-max-pages [1]))))
+  (let [page-size (:page-size (get @app/app-state :preview-pagination))
+        test-values [[1 2 3 4 5 6] [1 2 3 4 5] [1 2 3] [1 2] [1]]]
+    (doseq [items test-values]
+      (let [expect-pages (Math/ceil (/ (count items) page-size))]
+        (is (= expect-pages (app/calculate-max-pages items)))))))
 
 (deftest test-method-go-to-page
   (app/go-to-page 2)
