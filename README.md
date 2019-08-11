@@ -1,28 +1,34 @@
-# {{name}}
+﻿# INEZ - Der INtelligente EinkaufsZettel
+My Entry for the [IT-Talents Code Competition](https://www.it-talents.de/foerderung/code-competition/edeka-digital-code-competition-08-2019).
+This Program is written in [ClojureScript](https://clojurescript.org/).
+I have used this Code Competition to learn Clojure/ClojureScript. It was a great experience. It took me roughly two Weeks.
+## Requirements
+	 - node (tested with 8.9.0)
+	 - yarn (tested with 1.17.3)
+## Used external Packages
+- [Bootstrap](https://getbootstrap.com/)
+- [Bytesize Icons](https://github.com/danklammer/bytesize-icons/)
+## Installation
+    clone this repo
+    yarn deps
+## Run the Tests
+On Linux:
 
-## Run
+    yarn test-linux
 
-``` shell
-yarn install
+On Windows:
 
-yarn watch
-```
+     yarn test-windows
 
-## Clean
+## Build
+(**This is optional**, it will build the HTML Files and compile the Program into JavaScript. **This is not needed** when you use `yarn server` or `yarn watch`)
 
-``` shell
-yarn clean
-```
+    yarn release
+## Start
 
-## Release
+    yarn server
+This will compile the Program into JavaScript and start a local WebServer listening on [localhost:8700](http://127.0.0.1:8700/) which serves the Program.
+## Development
 
-``` shell
-yarn release
-```
-
-## License
-
-Copyright © 2017 FIXME
-
-Distributed under the Eclipse Public License either version 1.0 or (at
-your option) any later version.
+    yarn watch
+Same as `yarn server` and will live recompile the changes in the Browser.

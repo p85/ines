@@ -1,6 +1,6 @@
 (ns test.app-test
   (:require [cljs.test :refer (deftest is)])
-  (:require [ines.app :as app]))
+  (:require [inez.app :as app]))
 
 ;; populate the state with example items
 (swap! app/app-state assoc :items [{:name ["Milch"] :units "Liter"}

@@ -1,6 +1,6 @@
 (ns test.item-list-test
   (:require [cljs.test :refer (deftest is)])
-  (:require [ines.item-list :as item-list]))
+  (:require [inez.item-list :as item-list]))
 
 (deftest test-the-list-structure
   (is (vector? item-list/item-list)))

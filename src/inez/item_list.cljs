@@ -1,4 +1,4 @@
-(ns ines.item-list)
+(ns inez.item-list)
 
 (def item-list [{:name ["Milch"] :units "Liter"}
                 {:name ["Jogurt" "Danone"] :units "Kg"}

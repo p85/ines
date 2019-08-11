@@ -17,13 +17,13 @@
 
                 :modules
                 {:main
-                 {:entries [ines.app]}}
+                 {:entries [inez.app]}}
 
                 :devtools
         ;; before live-reloading any code call this function
-                {:before-load ines.app/stop
+                {:before-load inez.app/stop
          ;; after live-reloading finishes call this function
-                 :after-load ines.app/start
+                 :after-load inez.app/start
          ;; serve the public directory over http at port 8700
                  :http-root    "public"
                  :http-port    8700

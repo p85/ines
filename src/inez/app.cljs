@@ -1,7 +1,7 @@
 
-(ns ines.app
+(ns inez.app
   (:require [reagent.core :as reagent :refer [atom]])
-  (:require [ines.item-list :as item-list]))
+  (:require [inez.item-list :as item-list]))
 
 (defonce app-state (reagent/atom {:searchText nil
                                   :showPreview false
@@ -129,7 +129,7 @@
 
 (defn main-component []
   [:div
-   [:h2 {:class "app-title"} "Der (halbwegs) intelligente Einkaufszettel"]
+   [:h2 {:class "app-title"} "INEZ - Der INtelligente EinkaufsZettel"]
    [:div {:class "input-group mb-3 search"}
     [:input {:type "text" :class "form-control search-input-box" :placeholder "Was suchen sie?" :aria-label "aria-label-wtf" :aria-describedby "btn-show-all" :on-change #(text-input (-> % .-target .-value))}]
     [:div {:class "input-group-append"}
