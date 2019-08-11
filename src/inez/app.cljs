@@ -96,7 +96,7 @@
 
 (defn preview-not-found-component []
   "preview list empty component"
-  [:div {:class "alert alert-danger alert-text"} [:img {:src "/img/alert.svg" :class "alert-symbol"}] "nichts gefunden :("])
+  [:div {:class "alert alert-danger alert-text"} [:img {:src "img/alert.svg" :class "alert-symbol"}] "nichts gefunden :("])
 
 (defn preview-component []
   "preview list component"
@@ -123,9 +123,9 @@
           [:li {:key (:name item) :class "list-group-item list-group-item-action item"}
            [:span {:class "badge badge-primary badge-pill amount-badge"} (:amount item) " " (:units item)]
            (:name item)
-           [:img {:src "/img/plus.svg" :class "add-item-button" :on-click #(add-item (:name item) (:units item) 1)}]
-           [:img {:src "/img/minus.svg" :class "minus-item-button" :on-click #(add-item (:name item) (:units item) -1)}]
-           [:img {:src "/img/trash.svg" :class "delete-item-button" :on-click #(delete-item (:name item))}]])]])))
+           [:img {:src "img/plus.svg" :class "add-item-button" :on-click #(add-item (:name item) (:units item) 1)}]
+           [:img {:src "img/minus.svg" :class "minus-item-button" :on-click #(add-item (:name item) (:units item) -1)}]
+           [:img {:src "img/trash.svg" :class "delete-item-button" :on-click #(delete-item (:name item))}]])]])))
 
 (defn main-component []
   [:div
