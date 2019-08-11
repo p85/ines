@@ -26,4 +26,4 @@ install:
 before_script:
   yarn release
 script:
-  yarn test
+  yarn test-linux
