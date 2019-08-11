@@ -67,7 +67,7 @@
     (if-not (some #(= (:name %) item-name) currentList)
       (swap! app-state assoc :list (conj currentList {:name item-name :units units :amount (or amount 1)}))
       (when-let [found-existing-item (into {} (filter #(= (:name %) item-name) currentList))]
-        (let [updated-item (assoc found-existing-item :amount (+ (int (:amount found-existing-item)) (if (= amount nil) 1 (int amount))))]
+        (let [updated-item (assoc found-existing-item :amount (+ (:amount found-existing-item) (if (= amount nil) 1 amount)))]
           (if (= (:amount updated-item) 0)
             (delete-item item-name)
             (swap! app-state assoc :list (map #(if (= (:name %) item-name) updated-item %) (:list @app-state)))))))))
