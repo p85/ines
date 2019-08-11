@@ -102,7 +102,7 @@
   "preview list component"
   (let [sText (get @app-state :searchText)]
     (if (and (= true (get @app-state :showPreview) (empty? sText)))
-      (show-preview-results (map #(merge {:name (first (:name %)) :amount 1 :units (:units %)}) (get @app-state :items)))
+      (show-preview-results (flatten (map #(for [names (:name %)] (merge {:name names :amount 1 :units (:units %)})) (get @app-state :items))))
       (when-not (empty? sText)
         (let [preview-results (input-parser sText)]
           (if-not (empty? preview-results)
