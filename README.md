@@ -1,5 +1,6 @@
 ﻿# INEZ - Der INtelligente EinkaufsZettel
 develop [![Build Status](https://travis-ci.com/p85/ines.svg?token=WBCzZARApxyW7X3Upy1E&branch=develop)](https://travis-ci.com/p85/ines)
+
 master [![Build Status](https://travis-ci.com/p85/ines.svg?token=WBCzZARApxyW7X3Upy1E&branch=master)](https://travis-ci.com/p85/ines)
 
 My Entry for the [IT-Talents Code Competition](https://www.it-talents.de/foerderung/code-competition/edeka-digital-code-competition-08-2019).
