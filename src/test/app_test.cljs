@@ -66,6 +66,6 @@
 
 (deftest test-method-input-parser
   (is (= [{:name "Milch", :amount 1, :units "Liter"}] (app/input-parser "Milch"))) ;; find a exact match
-  (is (= [{:name "Milch", :amount 1, :units "Liter"} {:name "Milka", :amount 1, :units "Stück"}] (app/input-parser "M"))) ;; find a appropiate match
+  (is (= [{:name "Milch", :amount 1, :units "Liter"} {:name "Schokolade", :amount 1, :units "Stück"} {:name "Milka", :amount 1, :units "Stück"} {:name "Alpia", :amount 1, :units "Stück"}] (app/input-parser "M"))) ;; find a appropiate match
   (is (= [] (app/input-parser "this_should_not_match"))) ;; should find no match
-  (is (= [{:name "Alpia", :amount 3, :units "Stück"}] (app/input-parser "3 alpia")))) ;; should find alpia, despite it is an alias with quantity of 3
+  (is (= [{:name "Schokolade", :amount 3, :units "Stück"} {:name "Milka", :amount 3, :units "Stück"} {:name "Alpia", :amount 3, :units "Stück"}] (app/input-parser "3 alpia")))) ;; should find alpia, despite it is an alias with quantity of 3
