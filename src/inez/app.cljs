@@ -84,16 +84,11 @@
 
 (defn input-parser [sText]
   "parses the searchValue and returns a vector of found items"
-  (let [s clojure.string amount (if (= 0 (int (re-find #"^ *\d+" sText))) 1 (int (re-find #"^ *\d+" sText))) sText (s.trim (s.replace sText #"^ *\d+" "")) result []]
-    (when-let [allItems (get @app-state :items)]
-      (into []
-            (remove #(nil? %)
-                    (flatten
-                     (for [i allItems]
-                       (for [ii (:name i)]
-                         (when (s.includes? (s.lower-case ii) (s.lower-case sText))
-                           (for [n (:name i)]
-                             (conj result {:name n :amount (or amount 1) :units (:units i)})))))))))))
+  (let [s clojure.string amount (if (= 0 (int (re-find #"^ *\d+" sText))) 1 (int (re-find #"^ *\d+" sText))) sText (s.trim (s.replace sText #"^ *\d+" ""))]
+    (into []
+          (flatten
+           (for [item-category (get @app-state :items) :when (some #(s.includes? (s.lower-case %) (s.lower-case sText)) (:name item-category))]
+             (map #(merge {:name % :amount (or amount 1) :units (:units item-category)}) (:name item-category)))))))
 
 (defn preview-not-found-component []
   "preview list empty component"
