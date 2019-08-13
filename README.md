@@ -1,17 +1,16 @@
 ﻿# INEZ - Der INtelligente EinkaufsZettel
-develop [![Build Status](https://travis-ci.com/p85/ines.svg?token=WBCzZARApxyW7X3Upy1E&branch=develop)](https://travis-ci.com/p85/ines)
 
-master [![Build Status](https://travis-ci.com/p85/ines.svg?token=WBCzZARApxyW7X3Upy1E&branch=master)](https://travis-ci.com/p85/ines)
+| Branch  |                                                                                                                                 |
+| ------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| develop | [![Build Status](https://travis-ci.com/p85/ines.svg?token=WBCzZARApxyW7X3Upy1E&branch=develop)](https://travis-ci.com/p85/ines) |
+| master  | [![Build Status](https://travis-ci.com/p85/ines.svg?token=WBCzZARApxyW7X3Upy1E&branch=master)](https://travis-ci.com/p85/ines)  |
+
 
 My Entry for the [IT-Talents Code Competition](https://www.it-talents.de/foerderung/code-competition/edeka-digital-code-competition-08-2019).
 
-This Program is written in [ClojureScript](https://clojurescript.org/).
+This Program is written in [ClojureScript](https://clojurescript.org/). This is my first ClojureScript Project. I have used this Code Competition to learn Clojure/ClojureScript.
 
-I have used this Code Competition to learn Clojure/ClojureScript.
-
-It was a great experience. 
-
-It took me roughly two Weeks.
+It was a great experience. It took me roughly two Weeks.
 
 ## Requirements
 	 - node (tested with 8.9.0)
@@ -20,9 +19,10 @@ It took me roughly two Weeks.
 - [Bootstrap](https://getbootstrap.com/)
 - [Bytesize Icons](https://github.com/danklammer/bytesize-icons/)
 ## Installation
-    clone this repo
+    clone this repo (duh)
     yarn deps
 ## Run the Tests
+
 On Linux:
 
     yarn test-linux
@@ -32,9 +32,9 @@ On Windows:
      yarn test-windows
 
 ## Build
-(**This is optional**, it will build the HTML Files and compile the Program into JavaScript. 
+This will build the HTML Files and compile the Program into JavaScript. 
 
-**This is not needed** when you use `yarn server` or `yarn watch`)
+### **This is not needed** when you use `yarn server` or `yarn watch`)
 
     yarn release
 ## Start
