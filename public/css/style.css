@@ -38,11 +38,6 @@
     min-width: 300px;
 }
 
-.item {
-    max-width: 30vw;
-    min-width: 300px;
-}
-
 .show-all-button {
     margin-left: 30px;
     cursor: pointer;
@@ -73,19 +68,28 @@
 }
 
 .delete-item-button {
-  right: 5px;
-  position: absolute;
   cursor: pointer;
+  position: absolute;
+  top: 15px;
+  right: 1%;
+  width: 20px;
+  height: 20px;
 }
 .add-item-button {
-  right: 40px;
-  position: absolute;
   cursor: pointer;
+  position: absolute;
+  top: 15px;
+  right: 19%;
+  width: 20px;
+  height: 20px;
 }
 .minus-item-button {
-  right: 85px;
   position: absolute;
+  right: 10%;
   cursor: pointer;
+  top: 15px;
+  width: 20px;
+  height: 20px;
 }
 
 .alert-text {
@@ -140,3 +144,11 @@
 .info-tooltip-element {
   padding-top: 5px;
 }
+
+.list-group-item-name {
+  box-sizing: unset;
+  max-width: 14vw;
+  word-break: break-all;
+  display: inline-block;
+}
+
