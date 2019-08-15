@@ -113,15 +113,14 @@
   "list component"
   (when-let [currentList (get @app-state :list)]
     (when-not (empty? currentList)
-      [:div {:class "alert alert-info list-label"} "Ihr Einkaufszettel:" [:br] [:br]
-       [:ul {:class "list-group"}
-        (for [item currentList]
-          [:li {:key (:name item) :class "list-group-item item"}
-           [:span {:class "badge badge-primary badge-pill amount-badge"} (:amount item) " " (:units item)]
-           [:span {:class "list-group-item-name"} (:name item)]
-           [:img {:src "img/plus.svg" :class "add-item-button" :on-click #(add-item (:name item) (:units item) 1)}]
-           [:img {:src "img/minus.svg" :class "minus-item-button" :on-click #(add-item (:name item) (:units item) -1)}]
-           [:img {:src "img/trash.svg" :class "delete-item-button" :on-click #(delete-item (:name item))}]])]])))
+      [:div {:class "container alert alert-info list-label"} "Ihr Einkaufszettel:" [:br] [:br]
+       (for [item currentList]
+         [:div {:key (:name item) :class "row list-group-item"}
+          [:div {:class "col-md-2 list-badge badge badge-primary badge-pill amount-badge"} (:amount item) " " (:units item)]
+          [:div {:class "col-md-10 list-group-item-name"} (:name item)]
+          [:img {:src "img/plus.svg" :class "add-item-button" :on-click #(add-item (:name item) (:units item) 1)}]
+          [:img {:src "img/minus.svg" :class "minus-item-button" :on-click #(add-item (:name item) (:units item) -1)}]
+          [:img {:src "img/trash.svg" :class "delete-item-button" :on-click #(delete-item (:name item))}]])])))
 
 (defn main-component []
   [:div {:class "main"}
