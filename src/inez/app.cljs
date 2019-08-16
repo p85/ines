@@ -76,10 +76,11 @@
   "returns the preview list"
   (swap! app-state assoc-in [:preview-pagination :total-pages] (calculate-max-pages items))
   [:div {:class "alert alert-success"}
-   [:ul {:class "list-group"}
+   [:div {:class "container"}
     (for [item (get-preview-items items)]
-      [:li {:key (:name item) :class "list-group-item list-group-item-action preview-item" :on-click #(add-item (:name item) (:units item) (:amount item))}
-       [:span {:class "badge badge-primary badge-pill amount-badge"} (:amount item) " " (:units item)] (:name item)])
+      [:div {:key (:name item) :class "row list-group-item preview-item" :on-click #(add-item (:name item) (:units item) (:amount item))}
+       [:div {:class "col-md-4 badge badge-primary badge-pill amount-badge list-badge"} (:amount item) " " (:units item)]
+       [:div {:class "col-md" :style {:display "flex"}} (:name item)]])
     [:div {:class "pagination"} (pagination-component)]]])
 
 (defn input-parser [sText]

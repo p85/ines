@@ -8,6 +8,7 @@
                                    {:name ["Brot" "Bread" "Vollkorn"] :units "Stück"}
                                    {:name ["Reis" "Rice" "Uncle" "Bens"] :units "Beutel"}
                                    {:name ["Schokolade" "Milka" "Alpia"] :units "Stück"}])
+(swap! app/app-state assoc :preview-pagination {:current-page 1 :page-size 2 :total-pages 0})
 
 (deftest test-the-initial-app-state
   (let [as @app/app-state]

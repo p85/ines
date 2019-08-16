@@ -28,8 +28,9 @@
 }
 
 .preview-item {
+    display: flex;
     cursor: pointer;
-    max-width: 30vw;
+    max-width: 60vw;
     min-width: 250px;
 }
 
@@ -57,6 +58,7 @@
 .amount-badge {
     margin-right: 20px;
     font-size: 16px;
+    max-height: 25px;
 }
 
 .list-label {
