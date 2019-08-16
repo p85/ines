@@ -131,15 +131,17 @@
     [:div {:class "input-group-append"}
      (let [show-preview-button-state (get @app-state :showPreview)]
        [:button {:class "btn btn-outline-secondary btn-show-all" :type "button" :id "btn-show-all" :on-click #(show-preview (not show-preview-button-state))} (if (= true show-preview-button-state) "Liste ausblenden" "alle Artikel anzeigen")])]
-    [:div {:class "info-tooltip-element" :title "Gesuchten Artikel eingeben, zB.:\nSchokolade\noder mit Mengenangabe:\n5 Milch"}
-     [:img {:src "img/info.svg" :class "info-tooltip-icon"}]]]
+    [:div {:class "info-tooltip-element" :data-toggle "tooltip" :title "Gesuchten Artikel eingeben, zB.:\n\nSchokolade\n\noder mit Mengenangabe:\n\n5 Milch"}
+     [:img {:src "img/info.svg" :id "info" :class "info-tooltip-icon"}]]]
    [:div {:class "preview"} (preview-component)]
    [:div {:class "list"} (list-component)]])
 
 
 (defn start []
   (reagent/render-component [main-component]
-                            (. js/document (getElementById "app"))))
+                            (. js/document (getElementById "app")))
+  (.ready (js/$ js/document)
+          #(.tooltip (js/$ "[data-toggle=\"tooltip\"]"))))
 
 (defn ^:export init []
   (start))
