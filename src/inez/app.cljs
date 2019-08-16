@@ -5,7 +5,7 @@
 
 (defonce app-state (reagent/atom {:searchText nil
                                   :showPreview false
-                                  :preview-pagination {:current-page 1 :page-size 2 :total-pages 0}
+                                  :preview-pagination {:current-page 1 :page-size 5 :total-pages 0}
                                   :list []
                                   :items item-list/item-list}))
 ;; **************
@@ -113,7 +113,7 @@
   "list component"
   (when-let [currentList (get @app-state :list)]
     (when-not (empty? currentList)
-      [:div {:class "container alert alert-info list-label"} "Ihr Einkaufszettel:" [:br] [:br]
+      [:div {:class "container alert alert-info list-label"} "Dein Einkaufszettel:" [:br] [:br]
        (for [item currentList]
          [:div {:key (:name item) :class "row list-group-item"}
           [:div {:class "col-md-2 list-badge badge badge-primary badge-pill amount-badge"} (:amount item) " " (:units item)]
@@ -126,7 +126,7 @@
   [:div {:class "main"}
    [:h2 {:class "app-title"} "INEZ - Der INtelligente EinkaufsZettel"]
    [:div {:class "input-group mb-3 search"}
-    [:input {:type "text" :class "form-control search-input-box" :placeholder "Was suchen sie?" :aria-label "aria-label-wtf" :aria-describedby "btn-show-all" :on-change #(text-input (-> % .-target .-value))}]
+    [:input {:type "text" :class "form-control search-input-box" :placeholder "Was suchst du?" :aria-label "aria-label-wtf" :aria-describedby "btn-show-all" :on-change #(text-input (-> % .-target .-value))}]
     [:div {:class "input-group-append"}
      (let [show-preview-button-state (get @app-state :showPreview)]
        [:button {:class "btn btn-outline-secondary btn-show-all" :type "button" :id "btn-show-all" :on-click #(show-preview (not show-preview-button-state))} (if (= true show-preview-button-state) "Liste ausblenden" "alle Artikel anzeigen")])]
