@@ -23,18 +23,12 @@ It was a great experience. It took me roughly two Weeks.
     yarn deps
 ## Run the Tests
 
-On Linux:
-
-    yarn test-linux
-
-On Windows:
-
-     yarn test-windows
+    yarn test
 
 ## Build
 This will build the HTML Files and compile the Program into JavaScript. 
 
-### **This is not needed** when you use `yarn server` or `yarn watch`)
+### **This is not needed** when you use `yarn server` or `yarn watch`
 
     yarn release
 ## Start
@@ -44,4 +38,4 @@ This will compile the Program into JavaScript and start a local WebServer listen
 ## Development
 
     yarn watch
-Same as `yarn server` and will live recompile the changes in the Browser.
+Same as `yarn server` but will live recompile the changes in the Browser.
