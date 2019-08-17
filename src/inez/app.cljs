@@ -93,7 +93,7 @@
 
 (defn preview-not-found-component []
   "preview list empty component"
-  [:div {:class "alert alert-danger alert-text"} [:img {:src "img/alert.svg" :class "alert-symbol"}] "nichts gefunden :("])
+  [:div {:class "alert alert-danger alert-text"} [:img {:src "img/alert.svg" :alt "Alert" :class "alert-symbol"}] "nichts gefunden :("])
 
 (defn preview-component []
   "preview list component"
@@ -119,9 +119,9 @@
          [:div {:key (:name item) :class "row list-group-item"}
           [:div {:class "col-md-2 list-badge badge badge-primary badge-pill amount-badge"} (:amount item) " " (:units item)]
           [:div {:class "col-md-10 list-group-item-name"} (:name item)]
-          [:img {:src "img/plus.svg" :class "add-item-button" :on-click #(add-item (:name item) (:units item) 1)}]
-          [:img {:src "img/minus.svg" :class "minus-item-button" :on-click #(add-item (:name item) (:units item) -1)}]
-          [:img {:src "img/trash.svg" :class "delete-item-button" :on-click #(delete-item (:name item))}]])])))
+          [:img {:src "img/plus.svg" :alt "+1" :class "list-action-button add-item-button" :on-click #(add-item (:name item) (:units item) 1)}]
+          [:img {:src "img/minus.svg" :alt "-1" :class "list-action-button minus-item-button" :on-click #(add-item (:name item) (:units item) -1)}]
+          [:img {:src "img/trash.svg" :alt "Löschen" :class "list-action-button delete-item-button" :on-click #(delete-item (:name item))}]])])))
 
 (defn main-component []
   [:div {:class "main"}
@@ -132,7 +132,7 @@
      (let [show-preview-button-state (get @app-state :showPreview)]
        [:button {:class "btn btn-outline-secondary btn-show-all" :type "button" :id "btn-show-all" :on-click #(show-preview (not show-preview-button-state))} (if (= true show-preview-button-state) "Liste ausblenden" "alle Artikel anzeigen")])]
     [:div {:class "info-tooltip-element" :data-toggle "tooltip" :title "Gesuchten Artikel eingeben, zB.:\nSchokolade\noder mit Mengenangabe:\n5 Milch"}
-     [:img {:src "img/info.svg" :class "info-tooltip-icon"}]]]
+     [:img {:src "img/info.svg" :alt "Quick Help" :class "info-tooltip-icon"}]]]
    [:div {:class "preview"} (preview-component)]
    [:div {:class "list"} (list-component)]])
 

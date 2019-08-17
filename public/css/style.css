@@ -12,8 +12,13 @@
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .main {
@@ -21,83 +26,86 @@
 }
 
 .preview {
-    margin-top: 15px;
-    margin-left: 20px;
-    width: 40vw;
-    min-width: 350px;
+  margin-top: 15px;
+  margin-left: 20px;
+  width: 40vw;
+  min-width: 350px;
 }
 
 .preview-item {
-    display: flex;
-    cursor: pointer;
-    max-width: 60vw;
-    min-width: 250px;
+  display: flex;
+  cursor: pointer;
+  max-width: 60vw;
+  min-width: 250px;
 }
 
 .list {
-    margin-top: 25px;
-    min-width: 300px;
+  margin-top: 25px;
+  min-width: 300px;
 }
 
 .show-all-button {
-    margin-left: 30px;
-    cursor: pointer;
+  margin-left: 30px;
+  cursor: pointer;
 }
 
 .search {
-    max-width: 30vw;
-    margin-top: 40px;
-    margin-left: 20px;
+  max-width: 30vw;
+  margin-top: 40px;
+  margin-left: 20px;
 }
 
 .app-title {
-    margin-top: 20px;
-    margin-left: 20px;
+  margin-top: 20px;
+  margin-left: 20px;
 }
 
 .amount-badge {
-    margin-right: 20px;
-    font-size: 16px;
-    max-height: 25px;
+  margin-right: 20px;
+  font-size: 16px;
+  max-height: 25px;
 }
 
 .list-label {
-    font-size: 18px;
-    font-weight: bold;
-    width: 40vw;
-    min-width: 350px;
-    margin-left: 20px;
+  font-size: 18px;
+  font-weight: bold;
+  width: 40vw;
+  min-width: 350px;
+  margin-left: 20px;
+}
+
+.list-action-button {
+  cursor: pointer;
+  position: absolute;
+  top: 15px;
+  width: 25px;
+  height: 25px;
+}
+
+.list-action-button:hover {
+  width: 30px;
+  height: 30px;
+  transition: width 0.5s;
+  transition: height 0.5s;
 }
 
 .delete-item-button {
-  cursor: pointer;
-  position: absolute;
-  top: 15px;
   right: 1%;
-  width: 20px;
-  height: 20px;
 }
+
 .add-item-button {
-  cursor: pointer;
-  position: absolute;
-  top: 15px;
   right: 19%;
-  width: 20px;
-  height: 20px;
 }
+
 .minus-item-button {
-  position: absolute;
   right: 10%;
-  cursor: pointer;
-  top: 15px;
-  width: 20px;
-  height: 20px;
 }
 
 .alert-text {
   font-size: 18px;
   font-weight: bold;
 }
+
 .alert-symbol {
   margin-right: 15px;
 }
@@ -131,6 +139,7 @@
   margin-left: 15px;
   margin-top: 15px;
 }
+
 .search-input-box {
   margin-top: 15px;
   min-width: 150px;
