@@ -5,8 +5,7 @@
     "release": "shadow-cljs release app",
     "server": "shadow-cljs server",
     "clean": "rm -rf target; rm -rf public/js/compiled",
-    "test-linux" : "shadow-cljs compile test && node out-test/node-tests.js",
-    "test-windows" : "shadow-cljs compile test && node out-test\\node-tests.js"
+    "test" : "shadow-cljs compile test && node out-test/node-tests.js"
   },
   "dependencies": {
     "create-react-class": "^15.6.2",

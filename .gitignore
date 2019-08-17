@@ -3,3 +3,4 @@ node_modules
 public/js/compiled
 .vscode/
 out-test/
+yarn-error.log

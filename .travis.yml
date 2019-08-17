@@ -11,7 +11,5 @@ cache:
   yarn: true
 install:
   yarn deps
-# before_script:
-#   yarn release
 script:
-  yarn test-linux
+  yarn test
