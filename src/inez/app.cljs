@@ -1,7 +1,7 @@
-
 (ns inez.app
   (:require [reagent.core :as reagent])
-  (:require [inez.app-state :as app-state]))
+  (:require [inez.app-state :as app-state])
+  (:require [inez.pagination-component :as pagination-component]))
 
 ; (defonce app-state (reagent/atom {:searchText nil
 ;                                   :showPreview false
@@ -12,13 +12,39 @@
 ;; * PAGINATION *
 ;; **************
 
-(defn calculate-max-pages [all-items]
-  "calculates the total-pages for the preview-list"
-  (Math/ceil (/ (count (into [] all-items)) (:page-size (get @app-state/app-state :preview-pagination)))))
+; (defn calculate-max-pages [all-items]
+;   "calculates the total-pages for the preview-list"
+;   (Math/ceil (/ (count (into [] all-items)) (:page-size (get @app-state/app-state :preview-pagination)))))
 
-(defn go-to-page [page]
-  "changes the actual preview list page"
-  (swap! app-state/app-state assoc-in [:preview-pagination :current-page] page))
+; (defn go-to-page [page]
+;   "changes the actual preview list page"
+;   (swap! app-state/app-state assoc-in [:preview-pagination :current-page] page))
+
+; (defn get-preview-items [all-items]
+;   "gets the preview items, respecting the pagination configuration"
+;   (let [pagination-config (get @app-state/app-state :preview-pagination)
+;         current-page (:current-page pagination-config)
+;         page-size (:page-size pagination-config)
+;         total-pages (:total-pages pagination-config)]
+;     (if (= current-page total-pages)
+;       (subvec (into [] all-items) (- (* current-page page-size) page-size))
+;       (subvec (into [] all-items) (- (* current-page page-size) page-size) (* current-page page-size)))))
+
+; (defn pagination-component []
+;   "pagination component, for navigating between preview-list items"
+;   (let [pagination-config (get @app-state/app-state :preview-pagination)
+;         current-page (:current-page pagination-config)
+;         page-size (:page-size pagination-config)
+;         total-pages (:total-pages pagination-config)]
+;     (for [page (range 1 (inc total-pages))]
+;       [:div {:class "pagination-page-element" :key page}
+;        (if (= page current-page)
+;          [:div {:class "pagination-page-element-button-active" :on-click #(go-to-page page)} page]
+;          [:div {:class "pagination-page-element-button-inactive" :on-click #(go-to-page page)} page])])))
+
+;; ***********************
+;; * FOR THE PREVIEW BOX *
+;; ***********************
 
 (defn get-preview-items [all-items]
   "gets the preview items, respecting the pagination configuration"
@@ -30,25 +56,9 @@
       (subvec (into [] all-items) (- (* current-page page-size) page-size))
       (subvec (into [] all-items) (- (* current-page page-size) page-size) (* current-page page-size)))))
 
-(defn pagination-component []
-  "pagination component, for navigating between preview-list items"
-  (let [pagination-config (get @app-state/app-state :preview-pagination)
-        current-page (:current-page pagination-config)
-        page-size (:page-size pagination-config)
-        total-pages (:total-pages pagination-config)]
-    (for [page (range 1 (inc total-pages))]
-      [:div {:class "pagination-page-element" :key page}
-       (if (= page current-page)
-         [:div {:class "pagination-page-element-button-active" :on-click #(go-to-page page)} page]
-         [:div {:class "pagination-page-element-button-inactive" :on-click #(go-to-page page)} page])])))
-
-;; ***********************
-;; * FOR THE PREVIEW BOX *
-;; ***********************
-
 (defn text-input [text]
   "on text entered into the text-box, update the state with the actual search value"
-  (go-to-page 1)
+  (pagination-component/go-to-page 1)
   (swap! app-state/app-state assoc :searchText text))
 
 (defn show-preview [state]
@@ -74,14 +84,14 @@
 
 (defn show-preview-results [items]
   "returns the preview list"
-  (swap! app-state/app-state assoc-in [:preview-pagination :total-pages] (calculate-max-pages items))
+  (swap! app-state/app-state assoc-in [:preview-pagination :total-pages] (pagination-component/calculate-max-pages items))
   [:div {:class "alert alert-success"}
    [:div {:class "container"}
     (for [item (get-preview-items items)]
       [:div {:key (:name item) :class "row list-group-item preview-item" :on-click #(add-item (:name item) (:units item) (:amount item))}
        [:div {:class "col-md-4 badge badge-primary badge-pill amount-badge list-badge"} (:amount item) " " (:units item)]
        [:div {:class "col-md" :style {:display "flex"}} (:name item)]])
-    [:div {:class "pagination"} (pagination-component)]]])
+    [:div {:class "pagination"} (pagination-component/pagination-component)]]])
 
 (defn input-parser [sText]
   "parses the searchValue and returns a vector of found items"
