@@ -1,7 +1,8 @@
 (ns inez.app
   (:require [reagent.core :as reagent])
   (:require [inez.app-state :as app-state])
-  (:require [inez.pagination-component :as pagination-component]))
+  (:require [inez.pagination-component :as pagination-component])
+  (:require [inez.preview-not-found-component :as preview-not-found-component]))
 
 ; (defonce app-state (reagent/atom {:searchText nil
 ;                                   :showPreview false
@@ -101,9 +102,9 @@
            (for [item-category (get @app-state/app-state :items) :when (some #(s.includes? (s.lower-case %) (s.lower-case sText)) (:name item-category))]
              (map #(merge {:name % :amount (or amount 1) :units (:units item-category)}) (:name item-category)))))))
 
-(defn preview-not-found-component []
-  "preview list empty component"
-  [:div {:class "alert alert-danger alert-text"} [:img {:src "img/alert.svg" :alt "Alert" :class "alert-symbol"}] "nichts gefunden :("])
+; (defn preview-not-found-component []
+;   "preview list empty component"
+;   [:div {:class "alert alert-danger alert-text"} [:img {:src "img/alert.svg" :alt "Alert" :class "alert-symbol"}] "nichts gefunden :("])
 
 (defn preview-component []
   "preview list component"
@@ -114,7 +115,7 @@
         (let [preview-results (input-parser sText)]
           (if-not (empty? preview-results)
             (show-preview-results preview-results)
-            (preview-not-found-component)))))))
+            (preview-not-found-component/preview-not-found-component)))))))
 
 ;; *******************************
 ;; * FOR THE SELECTED ITEMS LIST *
