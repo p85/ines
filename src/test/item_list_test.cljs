@@ -1,6 +1,10 @@
 (ns test.item-list-test
-  (:require [cljs.test :refer (deftest is)])
-  (:require [inez.item-list :as item-list]))
+  (:require [cljs.test :refer (deftest is use-fixtures)])
+  (:require [inez.item-list :as item-list])
+  (:require [test.fixture :as fixture])
+  (:require [inez.app-state :as app-state]))
+
+(use-fixtures :each (fixture/before-each app-state/app-state))
 
 (deftest test-the-list-structure
   (is (vector? item-list/item-list)))
