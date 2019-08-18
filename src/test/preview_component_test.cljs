@@ -1,48 +1,12 @@
-(ns test.app-test
-  (:require [cljs.test :refer (deftest is use-fixtures)])  
+(ns test.preview-component-test
+  (:require [cljs.test :refer (deftest is use-fixtures)])
   (:require [inez.app-state :as app-state])
-  (:require [inez.pagination-component :as pagination-component])
-  (:require [inez.preview-component :as preview-component])
-  (:require [test.fixture :as fixture]))
+  (:require [test.fixture :as fixture])
+  (:require [inez.preview-component :as preview-component]))
 
 (use-fixtures :each (fixture/before-each app-state/app-state))
-; ;; populate the state with example items
-; (swap! app-state/app-state assoc :items [{:name ["Milch"] :units "Liter"}
-;                                    {:name ["Jogurt" "Danone"] :units "Kg"}
-;                                    {:name ["Brot" "Bread" "Vollkorn"] :units "Stück"}
-;                                    {:name ["Reis" "Rice" "Uncle" "Bens"] :units "Beutel"}
-;                                    {:name ["Schokolade" "Milka" "Alpia"] :units "Stück"}])
-; ;; set the initial preview-pagination configuration
-; (swap! app-state/app-state assoc :preview-pagination {:current-page 1 :page-size 2 :total-pages 0})
-
-; (deftest test-the-initial-app-state
-;   (let [as @app-state/app-state]
-;     (is (contains? as :searchText))
-;     (is (contains? as :showPreview))
-;     (is (= false (:showPreview as)))
-;     (is (map? (:preview-pagination as)))
-;     (is (pos? (:current-page (:preview-pagination as))))
-;     (is (pos? (:page-size (:preview-pagination as))))
-;     (is (>= (:total-pages (:preview-pagination as)) 0))
-;     (is (vector? (:list as)))
-;     ;; item-list is being tested in item_list_test.cljs
-;     ))
-
-(deftest test-method-calculate-max-pages
-  (let [page-size (:page-size (get @app-state/app-state :preview-pagination))
-        test-values [[1 2 3 4 5 6] [1 2 3 4 5] [1 2 3] [1 2] [1]]]
-    (doseq [items test-values]
-      (let [expect-pages (Math/ceil (/ (count items) page-size))]
-        (is (= expect-pages (pagination-component/calculate-max-pages items)))))))
-
-(deftest test-method-go-to-page
-  (pagination-component/go-to-page 2)
-  (is (= 2 (:current-page (get @app-state/app-state :preview-pagination))))
-  (pagination-component/go-to-page 1)
-  (is (= 1 (:current-page (get @app-state/app-state :preview-pagination)))))
 
 (deftest test-method-show-preview-results
-  ; (swap! app-state/app-state assoc-in [:preview-pagination :total-pages] 2)
   (let [all-items [{:name "A" :amount 1 :units "Kg"} {:name "B" :amount 2 :units "Stück"} {:name "C" :amount 3 :units "T"} {:name "D" :amount 4 :units "Stückerl"}]
         expect [{:name "A" :amount 1 :units "Kg"} {:name "B" :amount 2 :units "Stück"}]]
     (is (= expect (preview-component/get-preview-items all-items)))))
