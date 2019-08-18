@@ -1,28 +1,28 @@
 
 (ns inez.app
-  (:require [reagent.core :as reagent :refer [atom]])
-  (:require [inez.item-list :as item-list]))
+  (:require [reagent.core :as reagent])
+  (:require [inez.app-state :as app-state]))
 
-(defonce app-state (reagent/atom {:searchText nil
-                                  :showPreview false
-                                  :preview-pagination {:current-page 1 :page-size 5 :total-pages 0}
-                                  :list []
-                                  :items item-list/item-list}))
+; (defonce app-state (reagent/atom {:searchText nil
+;                                   :showPreview false
+;                                   :preview-pagination {:current-page 1 :page-size 5 :total-pages 0}
+;                                   :list []
+;                                   :items item-list/item-list}))
 ;; **************
 ;; * PAGINATION *
 ;; **************
 
 (defn calculate-max-pages [all-items]
   "calculates the total-pages for the preview-list"
-  (Math/ceil (/ (count (into [] all-items)) (:page-size (get @app-state :preview-pagination)))))
+  (Math/ceil (/ (count (into [] all-items)) (:page-size (get @app-state/app-state :preview-pagination)))))
 
 (defn go-to-page [page]
   "changes the actual preview list page"
-  (swap! app-state assoc-in [:preview-pagination :current-page] page))
+  (swap! app-state/app-state assoc-in [:preview-pagination :current-page] page))
 
 (defn get-preview-items [all-items]
   "gets the preview items, respecting the pagination configuration"
-  (let [pagination-config (get @app-state :preview-pagination)
+  (let [pagination-config (get @app-state/app-state :preview-pagination)
         current-page (:current-page pagination-config)
         page-size (:page-size pagination-config)
         total-pages (:total-pages pagination-config)]
@@ -32,7 +32,7 @@
 
 (defn pagination-component []
   "pagination component, for navigating between preview-list items"
-  (let [pagination-config (get @app-state :preview-pagination)
+  (let [pagination-config (get @app-state/app-state :preview-pagination)
         current-page (:current-page pagination-config)
         page-size (:page-size pagination-config)
         total-pages (:total-pages pagination-config)]
@@ -49,32 +49,32 @@
 (defn text-input [text]
   "on text entered into the text-box, update the state with the actual search value"
   (go-to-page 1)
-  (swap! app-state assoc :searchText text))
+  (swap! app-state/app-state assoc :searchText text))
 
 (defn show-preview [state]
   "show/hide preview box"
-  (swap! app-state assoc :showPreview state))
+  (swap! app-state/app-state assoc :showPreview state))
 
 (defn delete-item [item-name]
   "deletes a item from the list"
-  (when-let [currentList (get @app-state :list)]
+  (when-let [currentList (get @app-state/app-state :list)]
     (when (some #(= (:name %) item-name) currentList)
-      (swap! app-state assoc :list (remove #(= (:name %) item-name) currentList)))))
+      (swap! app-state/app-state assoc :list (remove #(= (:name %) item-name) currentList)))))
 
 (defn add-item [item-name units amount]
   "adds a item to the list. if the item exists, increase the amount by 1 or the specified value in the textbox (passed in as amount)"
-  (when-let [currentList (get @app-state :list)]
+  (when-let [currentList (get @app-state/app-state :list)]
     (if-not (some #(= (:name %) item-name) currentList)
-      (swap! app-state assoc :list (conj currentList {:name item-name :units units :amount (or amount 1)}))
+      (swap! app-state/app-state assoc :list (conj currentList {:name item-name :units units :amount (or amount 1)}))
       (when-let [found-existing-item (into {} (filter #(= (:name %) item-name) currentList))]
         (let [updated-item (assoc found-existing-item :amount (+ (:amount found-existing-item) (if (= amount nil) 1 amount)))]
           (if (= (:amount updated-item) 0)
             (delete-item item-name)
-            (swap! app-state assoc :list (map #(if (= (:name %) item-name) updated-item %) (:list @app-state)))))))))
+            (swap! app-state/app-state assoc :list (map #(if (= (:name %) item-name) updated-item %) (:list @app-state/app-state)))))))))
 
 (defn show-preview-results [items]
   "returns the preview list"
-  (swap! app-state assoc-in [:preview-pagination :total-pages] (calculate-max-pages items))
+  (swap! app-state/app-state assoc-in [:preview-pagination :total-pages] (calculate-max-pages items))
   [:div {:class "alert alert-success"}
    [:div {:class "container"}
     (for [item (get-preview-items items)]
@@ -88,7 +88,7 @@
   (let [s clojure.string amount (if (= 0 (int (re-find #"^ *\d+" sText))) 1 (int (re-find #"^ *\d+" sText))) sText (s.trim (s.replace sText #"^ *\d+" ""))]
     (into []
           (flatten
-           (for [item-category (get @app-state :items) :when (some #(s.includes? (s.lower-case %) (s.lower-case sText)) (:name item-category))]
+           (for [item-category (get @app-state/app-state :items) :when (some #(s.includes? (s.lower-case %) (s.lower-case sText)) (:name item-category))]
              (map #(merge {:name % :amount (or amount 1) :units (:units item-category)}) (:name item-category)))))))
 
 (defn preview-not-found-component []
@@ -97,9 +97,9 @@
 
 (defn preview-component []
   "preview list component"
-  (let [sText (get @app-state :searchText)]
-    (if (and (= true (get @app-state :showPreview) (empty? sText)))
-      (show-preview-results (flatten (map #(for [names (:name %)] (merge {:name names :amount 1 :units (:units %)})) (get @app-state :items))))
+  (let [sText (get @app-state/app-state :searchText)]
+    (if (and (= true (get @app-state/app-state :showPreview) (empty? sText)))
+      (show-preview-results (flatten (map #(for [names (:name %)] (merge {:name names :amount 1 :units (:units %)})) (get @app-state/app-state :items))))
       (when-not (empty? sText)
         (let [preview-results (input-parser sText)]
           (if-not (empty? preview-results)
@@ -112,7 +112,7 @@
 
 (defn list-component []
   "list component"
-  (when-let [currentList (get @app-state :list)]
+  (when-let [currentList (get @app-state/app-state :list)]
     (when-not (empty? currentList)
       [:div {:class "container alert alert-info list-label"} "Dein Einkaufszettel:" [:br] [:br]
        (for [item currentList]
@@ -129,7 +129,7 @@
    [:div {:class "input-group mb-3 search"}
     [:input {:type "text" :class "form-control search-input-box" :placeholder "Was suchst du?" :aria-label "aria-label-wtf" :aria-describedby "btn-show-all" :on-change #(text-input (-> % .-target .-value))}]
     [:div {:class "input-group-append"}
-     (let [show-preview-button-state (get @app-state :showPreview)]
+     (let [show-preview-button-state (get @app-state/app-state :showPreview)]
        [:button {:class "btn btn-outline-secondary btn-show-all" :type "button" :id "btn-show-all" :on-click #(show-preview (not show-preview-button-state))} (if (= true show-preview-button-state) "Liste ausblenden" "alle Artikel anzeigen")])]
     [:div {:class "info-tooltip-element" :data-toggle "tooltip" :title "Gesuchten Artikel eingeben, zB.:\nSchokolade\noder mit Mengenangabe:\n5 Milch"}
      [:img {:src "img/info.svg" :alt "Quick Help" :class "info-tooltip-icon"}]]]
