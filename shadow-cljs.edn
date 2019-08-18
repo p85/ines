@@ -15,6 +15,7 @@
                 :output-dir "public/js/compiled"
                 :asset-path "/js/compiled"
 
+                :release {:output-dir "dist/js/compiled"}
                 :modules
                 {:main
                  {:entries [inez.app]}}
