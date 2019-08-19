@@ -8,10 +8,6 @@
 
 My Entry for the [IT-Talents Code Competition](https://www.it-talents.de/foerderung/code-competition/edeka-digital-code-competition-08-2019).
 
-This Program is written in [ClojureScript](https://clojurescript.org/). This was my first ClojureScript Project. I have used this Code Competition to learn Clojure/ClojureScript.
-
-It was a great experience. It took me roughly two Weeks.
-
 ## Requirements
 	 - node (tested with 8.9.0)
 	 - yarn (tested with 1.17.3)
